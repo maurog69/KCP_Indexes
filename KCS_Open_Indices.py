@@ -55,9 +55,15 @@ while True:
 
 selected_job_number = int(user_input)
 
-scan_directory = os.path.join(job_directory, list_of_KCP_jobs[selected_job_number-1])
+job_directory = os.path.join(job_directory, list_of_KCP_jobs[selected_job_number-1])
 
-list_of_documents = list_of_directories(scan_directory)
+list_of_batches = list_of_directories(job_directory)
+print("job_directory:", job_directory)
 
-print("\nYou have selected job ", user_input, ", ", list_of_KCP_jobs[selected_job_number-1], \
-    ", with ", len(list_of_documents), " documents.\n", sep="")
+print("\nYou have selected job ", user_input, ", \"", list_of_KCP_jobs[selected_job_number-1], \
+    "\", with ", len(list_of_batches), " batches.\n", sep="")
+
+for batch in list_of_batches:
+    list_of_documents = list_of_directories(os.path.join(job_directory, batch))
+    print("list_of_documents", list_of_documents, "in batch", batch)
+
