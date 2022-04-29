@@ -6,6 +6,8 @@ I have it in C:\Alaris\TempImages
 
 import os
 
+from soupsieve import select
+
 
 user_input = input("Please write the Temporal Directory or hit Enter for default: ")
 
@@ -28,10 +30,21 @@ for filename in os.listdir(temp_kcp_directory):
     if os.path.isdir(file_path):    # checking if is a directory
         list_of_KCP_jobs.append(filename)
 
+print("These are the available jobs:") 
+
 count_of_jobs = 1
 for job in list_of_KCP_jobs:
-    print("These are the available jobs:") 
     print("Job Number:", count_of_jobs, "Name:", job)
     count_of_jobs += 1
 
+prompt = "Please select a job number or enter to exit (1 - " + str(count_of_jobs-1) + "): "
 
+while True:
+    user_input = input(prompt)
+    if user_input == "":
+        exit()
+    if user_input.isdigit():
+        break
+
+selected_job_number = int(user_input)
+print("You have selected job ", user_input, " ", list_of_KCP_jobs[selected_job_number-1])
