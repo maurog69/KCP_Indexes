@@ -87,3 +87,13 @@ print("batch_directory:", batch_directory)
 list_of_documents = list_of_directories(batch_directory)
 
 print("list_of_documents:", list_of_documents)
+
+
+for document in list_of_documents:
+    document_directory = os.path.join(batch_directory, document)
+    list_of_images = list_of_directories(document_directory)
+    
+    for image in list_of_images:
+        index_filename = os.path.join(document_directory, "index")
+        print("index_filename", index_filename)
+
