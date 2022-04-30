@@ -40,12 +40,12 @@ print("These are the available jobs:")
 
 count_of_jobs = 0
 for job in list_of_KCP_jobs:
-    print("Job Number:", count_of_jobs+1, "Name:", job)
+    print("Job Number", count_of_jobs+1, "Name:", job)
     count_of_jobs += 1
 
 
 # Ask the user for a job to scan
-prompt = "Please select a job number or enter to exit (1 - " + str(count_of_jobs) + "): "
+prompt = "Please select a job number or Enter to exit (1 - " + str(count_of_jobs) + "): "
 while True:
     user_input = input(prompt)
     if user_input == "":
@@ -69,7 +69,7 @@ for batch in list_of_batches:
     print("Batch Number", count_of_batches+1, "Name:", batch)
     count_of_batches += 1
 
-prompt = "Please select a batch number to scan or enter to exit (1 - " + str(count_of_batches) + "): "
+prompt = "Please select a batch number to scan or Enter to exit (1 - " + str(count_of_batches) + "): "
 
 while True:
     user_input = input(prompt)
