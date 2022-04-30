@@ -58,12 +58,32 @@ selected_job_number = int(user_input)
 job_directory = os.path.join(job_directory, list_of_KCP_jobs[selected_job_number-1])
 
 list_of_batches = list_of_directories(job_directory)
-print("job_directory:", job_directory)
+print("job_directory:", job_directory) # !!!
 
-print("\nYou have selected job ", user_input, ", \"", list_of_KCP_jobs[selected_job_number-1], \
-    "\", with ", len(list_of_batches), " batches.\n", sep="")
+print("\nThere are ", len(list_of_batches), " batches in \"", \
+    list_of_KCP_jobs[selected_job_number-1], "\"\n", sep="")
 
+
+count_of_batches = 0
 for batch in list_of_batches:
-    list_of_documents = list_of_directories(os.path.join(job_directory, batch))
-    print("list_of_documents", list_of_documents, "in batch", batch)
+    print("Batch Number", count_of_batches+1, "Name:", batch)
+    count_of_batches += 1
 
+prompt = "Please select a batch number to scan or enter to exit (1 - " + str(count_of_batches) + "): "
+
+while True:
+    user_input = input(prompt)
+    if user_input == "":
+        exit()
+    if user_input.isdigit() and (1 <= int(user_input) <= count_of_batches):
+        break
+
+selected_batch_number = int(user_input)
+
+batch_directory = os.path.join(job_directory, list_of_batches[selected_batch_number-1])
+
+print("batch_directory:", batch_directory)
+
+list_of_documents = list_of_directories(batch_directory)
+
+print("list_of_documents:", list_of_documents)
