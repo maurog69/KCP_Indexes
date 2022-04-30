@@ -97,3 +97,12 @@ for document in list_of_documents:
         index_filename = os.path.join(document_directory, "index")
         print("index_filename", index_filename)
 
+        count = 0
+        with open(index_filename) as file_handle:
+            for line in file_handle:
+                count += 1
+                print("Line ", count, line.strip())
+
+
+        
+
