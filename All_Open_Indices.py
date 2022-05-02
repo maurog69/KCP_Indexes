@@ -1,7 +1,8 @@
 """
 Make a list of all the open indices inside the Temporal Directory
-Normally the jobs are in C:\ScanPro
-I have it in C:\Alaris\TempImages
+Write the list to "C:\Temp\open_indices.csv", and reset the file every time the scrip runs
+Normally the jobs are in "C:\ScanPro"
+I have it in "C:\Alaris\TempImages"
 """
 
 
@@ -20,16 +21,20 @@ else:
         exit()
 
 
-# Walk thru the Temporal Jobs Directory
-with open("C:\Temp\open_indices", "w") as open_indices_handle:      # Open file and erase old content
+# Open file and erase old content
+with open("C:\Temp\open_indices.csv", "w") as open_indices_handle:
+    # Write file header
+    open_indices_handle.write("Job Name, Batch Name, Document Number, Indices")
+    
+    # Walk thru the Temporal Jobs Directory      
     for base_path, directories, files in os.walk(temp_jobs_directory):
         for file_name in files:
-            if file_name == "index":
+            if file_name == "index":    # Only when the filename is "index"...
                 # Get the relative path extracting the base path and "\"
                 relative_path = base_path.replace(temp_jobs_directory + "\\", "")
                 path_parts = relative_path.split(os.sep)
 
-                # If it's a document level index
+                # And if it's a document level index
                 if len(path_parts) == 3: 
                     document_index_path = os.path.join(base_path, file_name)
                     job =      path_parts[0]
@@ -37,17 +42,12 @@ with open("C:\Temp\open_indices", "w") as open_indices_handle:      # Open file 
                     document = path_parts[2]
                     # Read the current index data
                     with open(document_index_path) as document_index_handle:
-                        # Read the index data but the header ([____Default____]) and the last newline (\n)  
+                        # Read the index data 
+                        # but the header ([____Default____]) and the last newline (\n)  
                         index_data = document_index_handle.readlines()[1:-1]    
                         print(index_data)
-                        header = job + batch + document
+                        header = job + "," + batch + ","  + document + "," 
                         open_indices_handle.write(header)
-                        open_indices_handle.writelines(index_data)  # Don't write the last newline
+                        open_indices_handle.writelines(index_data)
                 
-
-
-
-
-
-   
 
