@@ -13,13 +13,8 @@ def list_of_directories(path):
     """
     This function returns a list of the directories below "path"
     """
-    list_of_directories = []
-    for filename in os.listdir(path):
-        file_path = os.path.join(path, filename)
-    
-        if os.path.isdir(file_path):    # checking if is a directory
-            list_of_directories.append(filename)
-    return list_of_directories
+    # List comprehension 
+    return [file.path for file in os.scandir(path) if file.is_dir()]
 
 
 
