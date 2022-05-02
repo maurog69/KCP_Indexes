@@ -20,7 +20,7 @@ else:
         print("Please write a valid path")
         exit()
 
-
+document_counter = 0
 # Open file and erase old content
 with open(r"C:\Temp\all_open_indices.csv", "w") as open_indices_handle:
     # Write file header and newline
@@ -45,8 +45,13 @@ with open(r"C:\Temp\all_open_indices.csv", "w") as open_indices_handle:
                         # Read the index data 
                         # except the file header ([____Default____]) and the last newline (\n)  
                         index_data = document_index_handle.readlines()[1:-1]    
-                        print(index_data)
+                        
+                        # Write index data to file, separated by commas
                         header = job + "," + batch + ","  + document + "," 
                         open_indices_handle.write(header)
                         open_indices_handle.writelines(index_data)
+                    document_counter +=1
+
+print(document_counter, "documents found.\n")
+
                 
