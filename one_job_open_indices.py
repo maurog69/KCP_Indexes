@@ -1,7 +1,7 @@
 """
-Write the file "C:\Temp\all_open_indices.csv" with the selected job open indices
+Write the file "C:\Temp\open_indices.csv" with the selected job open indices
 inside the Temporal Directory.
-Reset the file "C:\Temp\all_open_indices.csv" every time the scrip runs
+Reset the file "C:\Temp\open_indices.csv" every time the scrip runs
 Normally the jobs are in "C:\ScanPro"
 I have it in "C:\Alaris\TempImages"
 """
