@@ -1,8 +1,8 @@
 """
 Write the file "C:\Temp\open_indices.csv" with the selected job open indices
-inside the Temporal Directory.
-Reset the file "C:\Temp\open_indices.csv" every time the scrip runs
-Normally the jobs are in "C:\ScanPro"
+inside the Temporal Directory of Kodak Capture Pro.
+Reset the file "C:\Temp\open_indices.csv" every time the scrip runs.
+By default the jobs are in "C:\ScanPro".
 I have it in "C:\Alaris\TempImages"
 """
 
@@ -14,7 +14,7 @@ def list_of_directories(path):
     This function returns a list of the directories below "path"
     """
     # List comprehension 
-    return [file.path for file in os.scandir(path) if file.is_dir()]
+    return [file.name for file in os.scandir(path) if file.is_dir()]
 
 
 
@@ -32,11 +32,11 @@ else:
 
 
 
-list_of_KCP_jobs = list_of_directories(job_directory)
+list_of_jobs = list_of_directories(job_directory)
 print("These are the available jobs:") 
 
 count_of_jobs = 0
-for job in list_of_KCP_jobs:
+for job in list_of_jobs:
     print("Job Number", count_of_jobs+1, "Name:", job)
     count_of_jobs += 1
 
@@ -50,15 +50,14 @@ while True:
     if user_input.isdigit() and (1 <= int(user_input) <= count_of_jobs):
         break
 
-selected_job_number = int(user_input)
+selected_job = list_of_jobs[int(user_input)-1]
 
-job_directory = os.path.join(job_directory, list_of_KCP_jobs[selected_job_number-1])
+job_directory = os.path.join(job_directory, selected_job)
 
 list_of_batches = list_of_directories(job_directory)
-print("job_directory:", job_directory) # !!!
 
 print("\nThere are ", len(list_of_batches), " batches in \"", \
-    list_of_KCP_jobs[selected_job_number-1], "\"\n", sep="")
+    selected_job, "\"\n", sep="")
 
 
 count_of_batches = 0
@@ -75,31 +74,39 @@ while True:
     if user_input.isdigit() and (1 <= int(user_input) <= count_of_batches):
         break
 
-selected_batch_number = int(user_input)
 
-batch_directory = os.path.join(job_directory, list_of_batches[selected_batch_number-1])
+selected_batch = list_of_batches[int(user_input)-1]
 
-print("batch_directory:", batch_directory)
+batch_directory = os.path.join(job_directory, selected_batch)
 
 list_of_documents = list_of_directories(batch_directory)
 
-print("list_of_documents:", list_of_documents)
 
+# Open file and erase old content
+with open(r"C:\Temp\open_indices.csv", "w") as open_indices_handle:
+    # Write file header and newline
+    job_file_header = "Job Name: " + selected_job + "\n"
+    open_indices_handle.write(job_file_header)
 
-for document in list_of_documents:
-    document_directory = os.path.join(batch_directory, document)
-    list_of_images = list_of_directories(document_directory)
+    batch_file_header = "Batch Name: " + selected_batch + "\n"
+    open_indices_handle.write(batch_file_header)
+
+    document_counter = 0
+    for document in list_of_documents:
+        document_directory = os.path.join(batch_directory, document)
+        list_of_documents = list_of_directories(document_directory)
     
-    for image in list_of_images:
         index_filename = os.path.join(document_directory, "index")
-        print("index_filename", index_filename)
+        
+        with open(index_filename) as document_index_handle:
+            index_data = document_index_handle.readlines()[1:-1]
+            header = "Indices in document " + document + ": "
+            open_indices_handle.write(header)
+            open_indices_handle.writelines(index_data)
 
-        count = 0
-        with open(index_filename) as file_handle:
-            for line in file_handle:
-                count += 1
-                print("Line ", count, line.strip())
+        document_counter += 1
 
+print(document_counter, "documents found.\n")
 
         
 
