@@ -1,6 +1,6 @@
 """
-Make a list of all the open indices inside the Temporal Directory
-Write the list to "C:\Temp\open_indices.csv", and reset the file every time the scrip runs
+Write the file "C:\Temp\all_open_indices.csv" with all the open indices inside the Temporal Directory
+Reset the file "C:\Temp\all_open_indices.csv" every time the scrip runs
 Normally the jobs are in "C:\ScanPro"
 I have it in "C:\Alaris\TempImages"
 """
@@ -22,9 +22,9 @@ else:
 
 
 # Open file and erase old content
-with open("C:\Temp\open_indices.csv", "w") as open_indices_handle:
-    # Write file header
-    open_indices_handle.write("Job Name, Batch Name, Document Number, Indices")
+with open(r"C:\Temp\all_open_indices.csv", "w") as open_indices_handle:
+    # Write file header and newline
+    open_indices_handle.write("Job Name, Batch Name, Document Number, Indices\n")
     
     # Walk thru the Temporal Jobs Directory      
     for base_path, directories, files in os.walk(temp_jobs_directory):
@@ -43,11 +43,10 @@ with open("C:\Temp\open_indices.csv", "w") as open_indices_handle:
                     # Read the current index data
                     with open(document_index_path) as document_index_handle:
                         # Read the index data 
-                        # but the header ([____Default____]) and the last newline (\n)  
+                        # except the file header ([____Default____]) and the last newline (\n)  
                         index_data = document_index_handle.readlines()[1:-1]    
                         print(index_data)
                         header = job + "," + batch + ","  + document + "," 
                         open_indices_handle.write(header)
                         open_indices_handle.writelines(index_data)
                 
-
