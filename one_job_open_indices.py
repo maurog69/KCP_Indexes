@@ -18,7 +18,7 @@ def list_of_directories(path):
 
 
 
-
+# Ask the user for the Temp path 
 user_input = input("Please write the Temporal Directory or hit Enter for default: ")
 
 if user_input == "":
@@ -35,19 +35,17 @@ else:
 list_of_jobs = list_of_directories(job_directory)
 print("These are the available jobs:") 
 
-count_of_jobs = 0
-for job in list_of_jobs:
+for count_of_jobs, job in enumerate(list_of_jobs):
     print("Job Number", count_of_jobs+1, "Name:", job)
-    count_of_jobs += 1
 
 
 # Ask the user for a job to scan
-prompt = "Please select a job number or Enter to exit (1 - " + str(count_of_jobs) + "): "
+prompt = "Please select a job number or Enter to exit (1 - " + str(count_of_jobs + 1) + "): "
 while True:
     user_input = input(prompt)
     if user_input == "":
         exit()
-    if user_input.isdigit() and (1 <= int(user_input) <= count_of_jobs):
+    if user_input.isdigit() and (1 <= int(user_input) <= count_of_jobs + 1):
         break
 
 selected_job = list_of_jobs[int(user_input)-1]
@@ -60,18 +58,18 @@ print("\nThere are ", len(list_of_batches), " batches in \"", \
     selected_job, "\"\n", sep="")
 
 
-count_of_batches = 0
-for batch in list_of_batches:
+# Ask the user for a batch to scan
+for count_of_batches, batch in enumerate(list_of_batches):
     print("Batch Number", count_of_batches+1, "Name:", batch)
-    count_of_batches += 1
 
-prompt = "Please select a batch number to scan or Enter to exit (1 - " + str(count_of_batches) + "): "
+
+prompt = "Please select a batch number to scan or Enter to exit (1 - " + str(count_of_batches + 1) + "): "
 
 while True:
     user_input = input(prompt)
     if user_input == "":
         exit()
-    if user_input.isdigit() and (1 <= int(user_input) <= count_of_batches):
+    if user_input.isdigit() and (1 <= int(user_input) <= count_of_batches + 1):
         break
 
 
@@ -99,14 +97,16 @@ with open(r"C:\Temp\open_indices.csv", "w") as open_indices_handle:
         index_filename = os.path.join(document_directory, "index")
         
         with open(index_filename) as document_index_handle:
-            index_data = document_index_handle.readlines()[1:-1]
+            # Read the index data
+            # except the file header ([____Default____]) and the last newline (\n)
+            index_data = document_index_handle.readlines()[1:-1]    
             header = "Indices in document " + document + ": "
             open_indices_handle.write(header)
             open_indices_handle.writelines(index_data)
 
         document_counter += 1
 
-print(document_counter, "documents found.\n")
+print("\n", document_counter, "documents found.\n")
 
         
 
